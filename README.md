@@ -12,5 +12,5 @@ Single click on package name will show summary description on bottom frame of GU
 Double click shows detailed information on the package.
 
 ** Note **
-The installed version and most recient version are shown at the top of the Detail information.
+The installed version and most recent version are shown at the top of the Detail information.
 If there is a difference, you should get the updated version.
