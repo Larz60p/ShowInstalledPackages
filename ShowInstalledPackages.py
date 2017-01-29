@@ -73,7 +73,6 @@ class ShowInstalledPackages:
         self.create_bottom_frame()
         self.create_treeframe()
         self.create_textframe()
-        self.create_treeframe()
         self.load_treeframe()
 
     def create_main_frame(self):
@@ -129,7 +128,8 @@ class ShowInstalledPackages:
         self.get_pkgs_from_pip()
         self.get_pks_details()
         for key in self.pkeys:
-            self.t1.insert('', 'end', text=key, values=self.pkglist[key])
+            if key in self.pkg_details:
+                self.t1.insert('', 'end', text=key, values=self.pkglist[key])
 
     def treeview_summary(self, event):
         curitem = self.t1.focus()
@@ -169,14 +169,14 @@ class ShowInstalledPackages:
             self.pkeys = list(self.pkglist.keys())
             self.pkeys.sort()
         else:
-            with open('ziggy1.txt', 'w') as fp:
-                self.pkeys = list(self.pkglist.keys())
-                self.pkeys.sort()
-                for key in self.pkeys:
-                    data = self.get_package_info(key)
-                    self.pkg_details[key] = data['info']
-                wpkg = str('self.pkg_details: {}\n'.format(self.pkg_details).encode('utf-8'))
-                fp.write(wpkg)
+            self.pkeys = list(self.pkglist.keys())
+            self.pkeys.sort()
+            for key in self.pkeys:
+                data = self.get_package_info(key)
+                if data is None:
+                    print("Rogue package {} has no body - Won't be listed".format(key))
+                    continue
+                self.pkg_details[key] = data['info']
 
         if self.internet_available:
             with open(self.PackageData_filename, 'w') as f:
