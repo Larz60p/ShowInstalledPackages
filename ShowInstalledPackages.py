@@ -142,10 +142,10 @@ class ShowInstalledPackages:
     def get_package_info(pkgname):
         pypi_info_url = 'https://pypi.python.org/pypi/{}/json'.format(pkgname)
         response = requests.get(pypi_info_url)
-        if response.status_code == requests.codes.ok:
-            jdata = json.loads(response.text.encode(response.encoding))
-            return jdata
-
+        response.raise_for_status()
+        jdata = json.loads(response.content.decode('utf-8'))
+        return jdata
+    
     def get_pkgs_from_pip(self):
         if not self.internet_available:
             with open(self.pkglist_filename, 'r') as f:
